@@ -1,4 +1,4 @@
-package com.example.ticketmaster;
+package com.example.member.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

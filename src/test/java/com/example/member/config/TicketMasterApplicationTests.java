@@ -1,4 +1,4 @@
-package com.example.ticketmaster;
+package com.example.member.config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
