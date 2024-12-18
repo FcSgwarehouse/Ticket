@@ -1,26 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 设置根日志级别 -->
+    <!-- 控制台输出的日志配置 (STDOUT) -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{mm:ss.SSS} %highlight(%-5level) %blue(%-30logger{30}:%-4line) %thread %green(%-16X{LOG_ID}) %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 追踪日志文件的配置 (TRACE_FILE) -->
+    <appender name="TRACE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/member/trace.log</file>  <!-- 指定文件路径 -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-50logger{50}:%-4line %thread %green(%-16X{LOG_ID}) %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>./log/member/trace.%d{yyyy-MM-dd}.log</FileNamePattern>  <!-- 使用相对路径 -->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>  <!-- 保留30天的日志文件 -->
+            <totalSizeCap>1GB</totalSizeCap>  <!-- 总文件大小不超过1GB -->
+        </rollingPolicy>
+    </appender>
+
+    <!-- 错误日志文件的配置 (ERROR_FILE) -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/member/error.log</file> <!-- 错误日志文件路径 -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-50logger{50}:%-4line %thread %green(%-16X{LOG_ID}) %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>./log/member/error.%d{yyyy-MM-dd}.log</FileNamePattern> <!-- 使用相对路径 -->
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory> <!-- 保留30天的日志文件 -->
+            <totalSizeCap>1GB</totalSizeCap> <!-- 总文件大小不超过1GB -->
+        </rollingPolicy>
+
+        <!-- 过滤器配置，确保仅 ERROR 级别的日志写入此文件 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>  <!-- 如果日志级别是ERROR，则接受该日志 -->
+            <onMismatch>DENY</onMismatch>  <!-- 否则拒绝 -->
+        </filter>
+    </appender>
+
+    <!-- 根日志配置，按级别指定输出位置 -->
     <root level="INFO">
-        <!-- 将日志输出到控制台 -->
-        <appender-ref ref="CONSOLE" />
-        <!-- 如果需要将日志保存到文件中，可以打开以下部分 -->
-        <!-- <appender-ref ref="FILE" /> -->
+        <!-- 控制台输出 -->
+        <appender-ref ref="STDOUT" />
+        <!-- 追踪日志输出 -->
+        <appender-ref ref="TRACE_FILE" />
+        <!-- 错误日志输出 -->
+        <appender-ref ref="ERROR_FILE" />
     </root>
-
-    <!-- 控制台日志输出配置 -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %level - %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-<!--    &lt;!&ndash; 文件日志输出配置 (可选) &ndash;&gt;-->
-<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/app.log</file>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %level - %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
 
 </configuration>
