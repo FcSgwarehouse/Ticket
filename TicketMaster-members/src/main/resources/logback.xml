@@ -1,0 +1,26 @@
+<configuration>
+
+    <!-- 设置根日志级别 -->
+    <root level="INFO">
+        <!-- 将日志输出到控制台 -->
+        <appender-ref ref="CONSOLE" />
+        <!-- 如果需要将日志保存到文件中，可以打开以下部分 -->
+        <!-- <appender-ref ref="FILE" /> -->
+    </root>
+
+    <!-- 控制台日志输出配置 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %level - %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+<!--    &lt;!&ndash; 文件日志输出配置 (可选) &ndash;&gt;-->
+<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/app.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %level - %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+</configuration>
